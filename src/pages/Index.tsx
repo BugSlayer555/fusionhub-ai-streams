@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Zap, Users, Discover, Youtube } from "lucide-react";
+import { ArrowRight, Zap, Users, Search, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {
@@ -25,7 +24,7 @@ const Index = () => {
       description: "Join vibrant communities and connect with like-minded creators"
     },
     {
-      icon: <Discover className="h-8 w-8 text-green-400" />,
+      icon: <Search className="h-8 w-8 text-green-400" />,
       title: "Personalized Discovery",
       description: "Discover content tailored to your interests and preferences"
     }

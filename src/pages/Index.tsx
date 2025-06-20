@@ -56,9 +56,11 @@ const Index = () => {
               <a href="#about" className="hover:text-purple-400 transition-colors">About</a>
               <a href="#features" className="hover:text-purple-400 transition-colors">Features</a>
               <a href="#contact" className="hover:text-purple-400 transition-colors">Contact</a>
-              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
-                Login
-              </Button>
+              <Link to="/login">
+                <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
+                  Login
+                </Button>
+              </Link>
             </nav>
 
             {/* Mobile menu button */}
@@ -80,9 +82,11 @@ const Index = () => {
               <a href="#about" className="block hover:text-purple-400 transition-colors">About</a>
               <a href="#features" className="block hover:text-purple-400 transition-colors">Features</a>
               <a href="#contact" className="block hover:text-purple-400 transition-colors">Contact</a>
-              <Button variant="outline" className="w-full border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
-                Login
-              </Button>
+              <Link to="/login">
+                <Button variant="outline" className="w-full border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
+                  Login
+                </Button>
+              </Link>
             </nav>
           )}
         </div>
@@ -103,13 +107,15 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold"
-            >
-              Join Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/login">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold"
+              >
+                Join Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
             <Button 
               variant="outline" 
               size="lg"
@@ -158,13 +164,15 @@ const Index = () => {
             <p className="text-lg mb-8 text-gray-300">
               Join thousands of creators and viewers already experiencing the future of streaming.
             </p>
-            <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-12 py-4 text-lg font-semibold"
-            >
-              Get Started Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link to="/login">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-12 py-4 text-lg font-semibold"
+              >
+                Get Started Free
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

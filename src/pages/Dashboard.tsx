@@ -1,7 +1,7 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 import { 
   Home, 
   Search, 
@@ -16,18 +16,23 @@ import {
   Share,
   Play,
   Eye,
-  Zap
+  Zap,
+  FileText,
+  Shield
 } from "lucide-react";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("home");
+  const navigate = useNavigate();
 
   const sidebarItems = [
     { id: "home", icon: Home, label: "Home" },
+    { id: "posts", icon: FileText, label: "All Posts", action: () => navigate("/posts") },
     { id: "discover", icon: Search, label: "Discover" },
     { id: "communities", icon: Users, label: "Communities" },
     { id: "trending", icon: TrendingUp, label: "Trending" },
     { id: "live", icon: Radio, label: "Go Live" },
+    { id: "admin", icon: Shield, label: "Admin Panel", action: () => navigate("/admin") },
     { id: "settings", icon: Settings, label: "Settings" },
   ];
 
@@ -98,7 +103,12 @@ const Dashboard = () => {
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
               <Bell className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-white hover:bg-white/10"
+              onClick={() => navigate("/profile")}
+            >
               <User className="h-5 w-5" />
             </Button>
           </div>
@@ -112,7 +122,13 @@ const Dashboard = () => {
             {sidebarItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => {
+                  if (item.action) {
+                    item.action();
+                  } else {
+                    setActiveTab(item.id);
+                  }
+                }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === item.id
                     ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"

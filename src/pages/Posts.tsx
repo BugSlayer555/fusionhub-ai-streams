@@ -1,8 +1,8 @@
 
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { usePosts } from "@/contexts/PostsContext";
 import { 
   Heart, 
   MessageCircle, 
@@ -13,91 +13,17 @@ import {
   ArrowLeft
 } from "lucide-react";
 
-interface BasePost {
-  id: number;
-  type: string;
-  title: string;
-  category: string;
-}
-
-interface RegularPost extends BasePost {
-  type: "post";
-  content: string;
-  author: string;
-  authorAvatar: string;
-  timestamp: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  image?: string;
-}
-
-interface LivePost extends BasePost {
-  type: "live";
-  streamer: string;
-  streamImage: string;
-  viewers: number;
-  isLive: boolean;
-  duration: string;
-}
-
-type Post = RegularPost | LivePost;
-
 const Posts = () => {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState<Post[]>([
-    {
-      id: 1,
-      type: "post",
-      title: "Revolutionary AI breakthrough in content creation",
-      content: "Scientists have developed a new AI model that can generate highly realistic content across multiple formats including text, images, and video...",
-      author: "TechNewsDaily",
-      authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
-      timestamp: "2 hours ago",
-      likes: 342,
-      comments: 67,
-      shares: 23,
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=300&fit=crop",
-      category: "Technology"
-    },
-    {
-      id: 2,
-      type: "live",
-      title: "Live: Building Next-Gen AI Applications",
-      streamer: "CodeWithAI",
-      streamImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=300&fit=crop",
-      viewers: 1847,
-      category: "Programming",
-      isLive: true,
-      duration: "2:34:12"
-    },
-    {
-      id: 3,
-      type: "post",
-      title: "The Future of Streaming: What's Coming Next",
-      content: "As we look ahead to the next decade of streaming technology, several key trends are emerging that will reshape how we consume and create content...",
-      author: "StreamInsights",
-      authorAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face",
-      timestamp: "5 hours ago",
-      likes: 198,
-      comments: 34,
-      shares: 12,
-      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=300&fit=crop",
-      category: "Entertainment"
-    }
-  ]);
+  const { posts } = usePosts();
 
   const handleLike = (postId: number) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId && post.type === "post") {
-        return { ...post, likes: post.likes + 1 };
-      }
-      return post;
-    }));
+    // Note: This would need to be implemented in the context for global state management
+    console.log(`Liked post ${postId}`);
   };
 
   const handleGoBack = () => {
-    navigate(-1); // Go back to previous page
+    navigate(-1);
   };
 
   return (

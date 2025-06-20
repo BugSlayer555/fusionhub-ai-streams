@@ -26,14 +26,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const sidebarItems = [
-    { id: "home", icon: Home, label: "Home" },
+    { id: "home", icon: Home, label: "Home", action: () => setActiveTab("home") },
     { id: "posts", icon: FileText, label: "All Posts", action: () => navigate("/posts") },
-    { id: "discover", icon: Search, label: "Discover" },
-    { id: "communities", icon: Users, label: "Communities" },
-    { id: "trending", icon: TrendingUp, label: "Trending" },
-    { id: "live", icon: Radio, label: "Go Live" },
+    { id: "discover", icon: Search, label: "Discover", action: () => setActiveTab("discover") },
+    { id: "communities", icon: Users, label: "Communities", action: () => setActiveTab("communities") },
+    { id: "trending", icon: TrendingUp, label: "Trending", action: () => setActiveTab("trending") },
+    { id: "live", icon: Radio, label: "Go Live", action: () => setActiveTab("live") },
     { id: "admin", icon: Shield, label: "Admin Panel", action: () => navigate("/admin") },
-    { id: "settings", icon: Settings, label: "Settings" },
+    { id: "settings", icon: Settings, label: "Settings", action: () => setActiveTab("settings") },
   ];
 
   const feedItems = [
@@ -122,13 +122,7 @@ const Dashboard = () => {
             {sidebarItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => {
-                  if (item.action) {
-                    item.action();
-                  } else {
-                    setActiveTab(item.id);
-                  }
-                }}
+                onClick={item.action}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === item.id
                     ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"

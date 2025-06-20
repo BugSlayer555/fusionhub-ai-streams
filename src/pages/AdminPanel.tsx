@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,9 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Upload, Send } from "lucide-react";
+import { usePosts } from "@/contexts/PostsContext";
+import { useToast } from "@/hooks/use-toast";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const { addPost } = usePosts();
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
@@ -19,8 +22,29 @@ const AdminPanel = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle post submission logic here
-    console.log("New post:", { title, content, category });
+    
+    if (!title || !content || !category) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Add post to global state
+    addPost({
+      type: "post",
+      title,
+      content,
+      category
+    });
+
+    toast({
+      title: "Success",
+      description: "Post published successfully!"
+    });
+
     // Reset form
     setTitle("");
     setContent("");
@@ -59,6 +83,7 @@ const AdminPanel = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Enter post title..."
                   className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  required
                 />
               </div>
 
@@ -71,6 +96,7 @@ const AdminPanel = () => {
                   onChange={(e) => setCategory(e.target.value)}
                   placeholder="e.g., Technology, Entertainment..."
                   className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  required
                 />
               </div>
 
@@ -84,6 +110,7 @@ const AdminPanel = () => {
                   placeholder="Write your post content..."
                   rows={6}
                   className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                  required
                 />
               </div>
 

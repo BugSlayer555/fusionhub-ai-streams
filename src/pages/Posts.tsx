@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -8,7 +9,8 @@ import {
   Share, 
   Eye,
   Play,
-  Clock
+  Clock,
+  ArrowLeft
 } from "lucide-react";
 
 interface BasePost {
@@ -42,6 +44,7 @@ interface LivePost extends BasePost {
 type Post = RegularPost | LivePost;
 
 const Posts = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
@@ -93,13 +96,27 @@ const Posts = () => {
     }));
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // Go back to previous page
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            All Posts
-          </h1>
+          <div className="flex items-center space-x-4">
+            <Button 
+              onClick={handleGoBack}
+              variant="outline" 
+              size="icon"
+              className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              All Posts
+            </h1>
+          </div>
           <div className="flex space-x-2">
             <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
               Latest

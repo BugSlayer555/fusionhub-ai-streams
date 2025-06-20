@@ -11,8 +11,38 @@ import {
   Clock
 } from "lucide-react";
 
+interface BasePost {
+  id: number;
+  type: string;
+  title: string;
+  category: string;
+}
+
+interface RegularPost extends BasePost {
+  type: "post";
+  content: string;
+  author: string;
+  authorAvatar: string;
+  timestamp: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  image?: string;
+}
+
+interface LivePost extends BasePost {
+  type: "live";
+  streamer: string;
+  streamImage: string;
+  viewers: number;
+  isLive: boolean;
+  duration: string;
+}
+
+type Post = RegularPost | LivePost;
+
 const Posts = () => {
-  const [posts, setPosts] = useState([
+  const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
       type: "post",
@@ -55,11 +85,12 @@ const Posts = () => {
   ]);
 
   const handleLike = (postId: number) => {
-    setPosts(posts.map(post => 
-      post.id === postId && post.type === "post" 
-        ? { ...post, likes: post.likes + 1 }
-        : post
-    ));
+    setPosts(posts.map(post => {
+      if (post.id === postId && post.type === "post") {
+        return { ...post, likes: post.likes + 1 };
+      }
+      return post;
+    }));
   };
 
   return (

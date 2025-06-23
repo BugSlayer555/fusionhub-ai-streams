@@ -1,297 +1,222 @@
+
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Navigation from "@/components/Navigation";
+import { usePosts } from "@/contexts/PostsContext";
 import { 
-  Home, 
-  Search, 
-  Users, 
   TrendingUp, 
-  Radio, 
-  Settings, 
-  Bell, 
-  User,
+  Users, 
+  Eye, 
   Heart,
   MessageCircle,
   Share,
   Play,
-  Eye,
-  Zap,
-  FileText,
-  Shield
+  Radio,
+  Plus,
+  Bell
 } from "lucide-react";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("home");
-  const navigate = useNavigate();
+  const { posts } = usePosts();
+  const [notifications] = useState(5);
 
-  const sidebarItems = [
-    { id: "home", icon: Home, label: "Home", action: () => setActiveTab("home") },
-    { id: "posts", icon: FileText, label: "All Posts", action: () => navigate("/posts") },
-    { id: "discover", icon: Search, label: "Discover", action: () => setActiveTab("discover") },
-    { id: "communities", icon: Users, label: "Communities", action: () => setActiveTab("communities") },
-    { id: "trending", icon: TrendingUp, label: "Trending", action: () => setActiveTab("trending") },
-    { id: "live", icon: Radio, label: "Go Live", action: () => setActiveTab("live") },
-    { id: "admin", icon: Shield, label: "Admin Panel", action: () => navigate("/admin") },
-    { id: "settings", icon: Settings, label: "Settings", action: () => setActiveTab("settings") },
-  ];
+  // Get recent posts for quick overview
+  const recentPosts = posts.slice(0, 3);
+  const liveStreams = posts.filter(post => post.type === "live");
 
-  const feedItems = [
-    {
-      id: 1,
-      type: "post",
-      title: "AI Breakthrough in Content Creation",
-      summary: "New AI models are revolutionizing how creators produce content...",
-      author: "TechNewsAI",
-      likes: 245,
-      comments: 32,
-      shares: 18,
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400"
-    },
-    {
-      id: 2,
-      type: "live",
-      title: "Gaming Session: Building AI Apps",
-      streamer: "CodeMaster",
-      viewers: 1200,
-      category: "Technology",
-      isLive: true,
-      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400"
-    },
-    {
-      id: 3,
-      type: "post",
-      title: "The Future of Streaming Platforms",
-      summary: "How AI is changing the way we discover and consume content...",
-      author: "StreamInsights",
-      likes: 189,
-      comments: 24,
-      shares: 12,
-      image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400"
-    }
-  ];
-
-  const liveStreams = [
-    { name: "GameDev Pro", viewers: 890, category: "Gaming" },
-    { name: "AI Explorer", viewers: 654, category: "Tech" },
-    { name: "Music Vibes", viewers: 432, category: "Music" }
+  const stats = [
+    { title: "Total Posts", value: posts.length, icon: MessageCircle, color: "text-blue-400" },
+    { title: "Live Streams", value: liveStreams.length, icon: Radio, color: "text-red-400" },
+    { title: "Followers", value: "1.2K", icon: Users, color: "text-green-400" },
+    { title: "Views", value: "15.8K", icon: Eye, color: "text-purple-400" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white">
-      {/* Top Bar */}
-      <header className="bg-black/20 backdrop-blur-md border-b border-white/10 p-4">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-              <Zap className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-              FusionHub
-            </span>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder:text-gray-400 focus:outline-none focus:border-purple-400"
-              />
-            </div>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <Bell className="h-5 w-5" />
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="text-white hover:bg-white/10"
-              onClick={() => navigate("/profile")}
-            >
-              <User className="h-5 w-5" />
-            </Button>
-          </div>
+      <div className="flex">
+        {/* Sidebar Navigation */}
+        <div className="w-64 h-screen sticky top-0">
+          <Navigation />
         </div>
-      </header>
-
-      <div className="flex max-w-7xl mx-auto">
-        {/* Left Sidebar */}
-        <aside className="w-64 p-6 bg-black/20 backdrop-blur-md border-r border-white/10 min-h-screen">
-          <nav className="space-y-2">
-            {sidebarItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={item.action}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
-                  activeTab === item.id
-                    ? "bg-purple-600/20 text-purple-400 border border-purple-500/30"
-                    : "text-gray-300 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </nav>
-        </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
-          <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Welcome to your Feed</h1>
-            
-            {/* Feed Items */}
-            <div className="space-y-4">
-              {feedItems.map((item) => (
-                <Card key={item.id} className="bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10 transition-all duration-300">
+        <div className="flex-1 p-6">
+          <div className="max-w-6xl mx-auto space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                  Welcome back! 👋
+                </h1>
+                <p className="text-gray-400 mt-1">Here's what's happening on FusionHub today</p>
+              </div>
+              <div className="flex space-x-3">
+                <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
+                  <Bell className="h-4 w-4 mr-2" />
+                  Notifications
+                  {notifications > 0 && (
+                    <Badge variant="destructive" className="ml-2 text-xs">
+                      {notifications}
+                    </Badge>
+                  )}
+                </Button>
+              </div>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <Card key={index} className="bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10 transition-all duration-300">
                   <CardContent className="p-6">
-                    {item.type === "live" ? (
-                      <div className="flex space-x-4">
-                        <div className="relative">
-                          <img 
-                            src={item.image} 
-                            alt={item.title}
-                            className="w-32 h-20 object-cover rounded-lg"
-                          />
-                          <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1">
-                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                            <span>LIVE</span>
-                          </div>
-                          <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-1 rounded">
-                            <Play className="h-3 w-3" />
-                          </div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                          <p className="text-purple-400">{item.streamer}</p>
-                          <p className="text-gray-400">{item.category}</p>
-                          <div className="flex items-center space-x-4 mt-2 text-sm text-gray-400">
-                            <div className="flex items-center space-x-1">
-                              <Eye className="h-4 w-4" />
-                              <span>{item.viewers}</span>
-                            </div>
-                          </div>
-                        </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-400">{stat.title}</p>
+                        <p className="text-2xl font-bold text-white">{stat.value}</p>
                       </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <div className="flex space-x-4">
-                          <img 
-                            src={item.image} 
-                            alt={item.title}
-                            className="w-24 h-16 object-cover rounded-lg"
-                          />
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                            <p className="text-gray-300 text-sm mt-1">{item.summary}</p>
-                            <p className="text-purple-400 text-sm mt-2">By {item.author}</p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-6 text-gray-400">
-                          <button className="flex items-center space-x-2 hover:text-red-400 transition-colors">
-                            <Heart className="h-4 w-4" />
-                            <span>{item.likes}</span>
-                          </button>
-                          <button className="flex items-center space-x-2 hover:text-blue-400 transition-colors">
-                            <MessageCircle className="h-4 w-4" />
-                            <span>{item.comments}</span>
-                          </button>
-                          <button className="flex items-center space-x-2 hover:text-green-400 transition-colors">
-                            <Share className="h-4 w-4" />
-                            <span>{item.shares}</span>
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                      <stat.icon className={`h-8 w-8 ${stat.color}`} />
+                    </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </div>
-        </main>
 
-        {/* Right Sidebar */}
-        <aside className="w-80 p-6 bg-black/20 backdrop-blur-md border-l border-white/10">
-          <div className="space-y-6">
+            {/* Quick Actions */}
             <Card className="bg-white/5 backdrop-blur-md border-white/10">
               <CardHeader>
                 <CardTitle className="text-white flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span>Who's Live Now</span>
+                  <Plus className="h-5 w-5 text-purple-400" />
+                  <span>Quick Actions</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {liveStreams.map((stream, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div>
-                        <p className="text-white font-medium">{stream.name}</p>
-                        <p className="text-gray-400 text-sm">{stream.category}</p>
-                      </div>
-                      <div className="flex items-center space-x-1 text-gray-400 text-sm">
-                        <Eye className="h-3 w-3" />
-                        <span>{stream.viewers}</span>
-                      </div>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Button className="bg-purple-600 hover:bg-purple-700 h-16 flex-col space-y-2">
+                    <MessageCircle className="h-6 w-6" />
+                    <span>Create Post</span>
+                  </Button>
+                  <Button className="bg-red-600 hover:bg-red-700 h-16 flex-col space-y-2">
+                    <Radio className="h-6 w-6" />
+                    <span>Go Live</span>
+                  </Button>
+                  <Button className="bg-blue-600 hover:bg-blue-700 h-16 flex-col space-y-2">
+                    <Users className="h-6 w-6" />
+                    <span>Join Community</span>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/5 backdrop-blur-md border-white/10">
-              <CardHeader>
-                <CardTitle className="text-white">Suggested Creators</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
-                      <div>
-                        <p className="text-white font-medium">Creator Pro</p>
-                        <p className="text-gray-400 text-xs">Tech Content</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Recent Activity */}
+              <Card className="bg-white/5 backdrop-blur-md border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center space-x-2">
+                    <TrendingUp className="h-5 w-5 text-purple-400" />
+                    <span>Recent Posts</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recentPosts.map((post) => (
+                      <div key={post.id} className="p-4 bg-white/5 rounded-lg">
+                        <h4 className="font-semibold text-white line-clamp-1">{post.title}</h4>
+                        <p className="text-sm text-gray-400 mt-1">
+                          {post.type === "post" ? post.author : post.streamer}
+                        </p>
+                        {post.type === "post" && (
+                          <div className="flex items-center space-x-4 mt-2 text-xs text-gray-400">
+                            <div className="flex items-center space-x-1">
+                              <Heart className="h-3 w-3" />
+                              <span>{post.likes}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <MessageCircle className="h-3 w-3" />
+                              <span>{post.comments}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Share className="h-3 w-3" />
+                              <span>{post.shares}</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    <Button size="sm" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
-                      Follow
-                    </Button>
+                    ))}
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-green-500 rounded-full"></div>
-                      <div>
-                        <p className="text-white font-medium">AI Insights</p>
-                        <p className="text-gray-400 text-xs">AI & ML</p>
-                      </div>
-                    </div>
-                    <Button size="sm" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white">
-                      Follow
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
+              {/* Live Streams */}
+              <Card className="bg-white/5 backdrop-blur-md border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center space-x-2">
+                    <Radio className="h-5 w-5 text-red-400" />
+                    <span>Live Now</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {liveStreams.length > 0 ? (
+                      liveStreams.map((stream) => (
+                        <div key={stream.id} className="p-4 bg-white/5 rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <div className="relative">
+                              <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center">
+                                <Play className="h-6 w-6 text-white" />
+                              </div>
+                              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-white line-clamp-1">{stream.title}</h4>
+                              <p className="text-sm text-purple-400">{stream.streamer}</p>
+                              <div className="flex items-center space-x-2 mt-1 text-xs text-gray-400">
+                                <Eye className="h-3 w-3" />
+                                <span>{stream.viewers.toLocaleString()} viewers</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8">
+                        <Radio className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-400">No live streams right now</p>
+                        <Button className="mt-4 bg-red-600 hover:bg-red-700">
+                          <Radio className="h-4 w-4 mr-2" />
+                          Start Streaming
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Trending Section */}
             <Card className="bg-white/5 backdrop-blur-md border-white/10">
               <CardHeader>
-                <CardTitle className="text-white">Popular Tags</CardTitle>
+                <CardTitle className="text-white flex items-center space-x-2">
+                  <TrendingUp className="h-5 w-5 text-green-400" />
+                  <span>Trending Topics</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {["#AI", "#Gaming", "#Tech", "#Music", "#Art", "#Coding"].map((tag) => (
-                    <span 
-                      key={tag}
-                      className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm hover:bg-purple-500/30 cursor-pointer transition-colors"
+                  {["AI", "Gaming", "React", "WebDev", "Design", "Tech", "Streaming"].map((topic) => (
+                    <Badge 
+                      key={topic} 
+                      variant="outline" 
+                      className="border-purple-500/30 text-purple-400 hover:bg-purple-500/20 cursor-pointer"
                     >
-                      {tag}
-                    </span>
+                      #{topic}
+                    </Badge>
                   ))}
                 </div>
               </CardContent>
             </Card>
           </div>
-        </aside>
+        </div>
       </div>
     </div>
   );

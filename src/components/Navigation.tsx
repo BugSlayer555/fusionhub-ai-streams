@@ -44,15 +44,15 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
   };
 
   return (
-    <nav className="bg-white/5 backdrop-blur-md border-r border-white/10 h-full">
+    <nav className="bg-card backdrop-blur-md border-r border-border h-full">
       <div className="p-4">
         {/* Logo */}
         <Link to="/dashboard" className="flex items-center space-x-2 mb-8">
-          <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-            <Zap className="h-5 w-5 text-white" />
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <Zap className="h-5 w-5 text-primary-foreground" />
           </div>
           {!isCollapsed && (
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="text-xl font-bold text-primary">
               FusionHub
             </span>
           )}
@@ -61,7 +61,7 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
         {/* Create Post Button */}
         <Link to="/admin">
           <Button 
-            className="w-full mb-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+            className="w-full mb-6 bg-primary hover:bg-primary/90 text-primary-foreground"
             size={isCollapsed ? "icon" : "default"}
           >
             <Plus className="h-4 w-4" />
@@ -77,8 +77,8 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
                 variant={isActive(item.path) ? "secondary" : "ghost"}
                 className={`w-full justify-start ${
                   isActive(item.path) 
-                    ? "bg-purple-600/20 text-purple-400 border-purple-500/50" 
-                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                    ? "bg-primary/20 text-primary border-primary/50" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 }`}
                 size={isCollapsed ? "icon" : "default"}
               >
@@ -96,8 +96,8 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
               variant={isActive("/profile") ? "secondary" : "ghost"}
               className={`w-full justify-start ${
                 isActive("/profile") 
-                  ? "bg-purple-600/20 text-purple-400 border-purple-500/50" 
-                  : "text-gray-300 hover:text-white hover:bg-white/10"
+                  ? "bg-primary/20 text-primary border-primary/50" 
+                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
               }`}
               size={isCollapsed ? "icon" : "default"}
             >
@@ -113,20 +113,20 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
           
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-gray-300 hover:text-white"
+            className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-accent"
             size={isCollapsed ? "icon" : "default"}
             onClick={() => {/* Handle notifications */}}
           >
             <Bell className="h-4 w-4" />
             {!isCollapsed && <span className="ml-2">Notifications</span>}
             {notifications > 0 && (
-              <span className="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
+              <span className="ml-auto w-2 h-2 bg-primary rounded-full"></span>
             )}
           </Button>
 
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-gray-300 hover:text-white"
+            className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-accent"
             size={isCollapsed ? "icon" : "default"}
             onClick={toggleTheme}
           >
@@ -136,7 +136,7 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
 
           <Button 
             variant="ghost" 
-            className="w-full justify-start text-gray-300 hover:text-white"
+            className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-accent"
             size={isCollapsed ? "icon" : "default"}
           >
             <Settings className="h-4 w-4" />

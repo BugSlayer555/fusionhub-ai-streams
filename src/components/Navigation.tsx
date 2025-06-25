@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,7 @@ import {
   User,
   Settings,
   Plus,
-  Zap,
-  Sun,
-  Moon
+  Zap
 } from "lucide-react";
 
 interface NavigationProps {
@@ -26,7 +25,6 @@ interface NavigationProps {
 const Navigation = ({ isCollapsed = false }: NavigationProps) => {
   const location = useLocation();
   const [notifications] = useState(3);
-  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const navItems = [
     { icon: Home, label: "Dashboard", path: "/dashboard" },
@@ -37,11 +35,6 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
   ];
 
   const isActive = (path: string) => location.pathname === path;
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
-  };
 
   return (
     <nav className="bg-card backdrop-blur-md border-r border-border h-full">
@@ -128,16 +121,6 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
             variant="ghost" 
             className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-accent"
             size={isCollapsed ? "icon" : "default"}
-            onClick={toggleTheme}
-          >
-            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            {!isCollapsed && <span className="ml-2">{isDarkMode ? 'Light' : 'Dark'}</span>}
-          </Button>
-
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start text-muted-foreground hover:text-foreground hover:bg-accent"
-            size={isCollapsed ? "icon" : "default"}
           >
             <Settings className="h-4 w-4" />
             {!isCollapsed && <span className="ml-2">Settings</span>}
@@ -149,3 +132,4 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
 };
 
 export default Navigation;
+

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { 
   Home, 
   FileText, 
@@ -12,7 +13,9 @@ import {
   User,
   Settings,
   Plus,
-  Zap
+  Zap,
+  Sun,
+  Moon
 } from "lucide-react";
 
 interface NavigationProps {
@@ -23,6 +26,7 @@ interface NavigationProps {
 const Navigation = ({ isCollapsed = false }: NavigationProps) => {
   const location = useLocation();
   const [notifications] = useState(3);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const navItems = [
     { icon: Home, label: "Dashboard", path: "/dashboard" },
@@ -30,10 +34,14 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
     { icon: Video, label: "Live", path: "/live" },
     { icon: Users, label: "Community", path: "/community" },
     { icon: Search, label: "Discover", path: "/discover" },
-    { icon: User, label: "Profile", path: "/profile" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
 
   return (
     <nav className="bg-white/5 backdrop-blur-md border-r border-white/10 h-full">
@@ -76,11 +84,6 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
               >
                 <item.icon className="h-4 w-4" />
                 {!isCollapsed && <span className="ml-2">{item.label}</span>}
-                {item.label === "Profile" && notifications > 0 && !isCollapsed && (
-                  <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-2 py-1">
-                    {notifications}
-                  </span>
-                )}
               </Button>
             </Link>
           ))}
@@ -88,10 +91,31 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
 
         {/* Bottom Actions */}
         <div className="absolute bottom-4 left-4 right-4 space-y-2">
+          <Link to="/profile">
+            <Button 
+              variant={isActive("/profile") ? "secondary" : "ghost"}
+              className={`w-full justify-start ${
+                isActive("/profile") 
+                  ? "bg-purple-600/20 text-purple-400 border-purple-500/50" 
+                  : "text-gray-300 hover:text-white hover:bg-white/10"
+              }`}
+              size={isCollapsed ? "icon" : "default"}
+            >
+              <User className="h-4 w-4" />
+              {!isCollapsed && <span className="ml-2">Profile</span>}
+              {notifications > 0 && !isCollapsed && (
+                <Badge variant="destructive" className="ml-auto text-xs">
+                  {notifications}
+                </Badge>
+              )}
+            </Button>
+          </Link>
+          
           <Button 
             variant="ghost" 
             className="w-full justify-start text-gray-300 hover:text-white"
             size={isCollapsed ? "icon" : "default"}
+            onClick={() => {/* Handle notifications */}}
           >
             <Bell className="h-4 w-4" />
             {!isCollapsed && <span className="ml-2">Notifications</span>}
@@ -99,6 +123,17 @@ const Navigation = ({ isCollapsed = false }: NavigationProps) => {
               <span className="ml-auto w-2 h-2 bg-red-500 rounded-full"></span>
             )}
           </Button>
+
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-gray-300 hover:text-white"
+            size={isCollapsed ? "icon" : "default"}
+            onClick={toggleTheme}
+          >
+            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {!isCollapsed && <span className="ml-2">{isDarkMode ? 'Light' : 'Dark'}</span>}
+          </Button>
+
           <Button 
             variant="ghost" 
             className="w-full justify-start text-gray-300 hover:text-white"

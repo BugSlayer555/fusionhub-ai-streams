@@ -13,6 +13,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Profile from "./pages/Profile";
 import Live from "./pages/Live";
 import Community from "./pages/Community";
+import CommunityGroups from "./pages/CommunityGroups";
 import Discover from "./pages/Discover";
 import NotFound from "./pages/NotFound";
 
@@ -31,7 +32,8 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/posts" element={<Posts />} />
             <Route path="/live" element={<Live />} />
-            <Route path="/community" element={<Community />} />
+            <Route path="/community" element={<CommunityGroups />} />
+            <Route path="/community/:communityId" element={<Community />} />
             <Route path="/discover" element={<Discover />} />
             <Route path="/admin" element={<AdminPanel />} />
             <Route path="/profile" element={<Profile />} />
